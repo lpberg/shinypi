@@ -8,22 +8,27 @@ df = read_data()
 
 # User Interface
 app_ui = ui.page_fluid(
+
 	ui.panel_title("ShinyPi"),
+
 	ui.layout_columns(
 		ui.output_ui("output_input_daterange"),
 		ui.output_ui("output_input_accounts"),
 		ui.output_ui("output_input_description"),
 		col_widths=(3,3),
 	),
+
     ui.output_text_verbatim(id = "output_txt"),
-	ui.layout_columns(
-		ui.card(
-			ui.output_table("output_result"),
+
+	ui.navset_tab(
+    	ui.nav_panel("Table",
+			ui.card(
+				ui.output_table("output_result"),
+			),
 		),
-		ui.card(
-			output_widget("plot"), 
+    	ui.nav_panel("Scatter", 
+			output_widget("scatter_plot"), 
 		),
-		col_widths=(6,6)
 	)
 )
 
@@ -38,7 +43,9 @@ def server(input, output, session):
 	@reactive.calc
 	def get_filtered_data():
 		filtered_df = df
-		# Filter by Account 
+		# Filter by Type
+		filtered_df = filtered_df.loc[filtered_df['type'] == 'debit']
+		# Filter by Account
 		filtered_df = filtered_df.loc[filtered_df['account'].isin(input.accounts())]
 		# Filter by Date
 		start_date, end_date = input.daterange()
@@ -52,13 +59,13 @@ def server(input, output, session):
 		return(get_filtered_data())
 
 	@render_widget
-	def plot():
-		scatterplot = px.scatter(
+	def scatter_plot():
+		return px.scatter(
 			data_frame = get_filtered_data(),
 			x="date",
-			y="amount"
+			y="amount",
+			color="description"
 		)
-		return scatterplot
 
 	@render.ui
 	def output_input_accounts():
@@ -78,6 +85,7 @@ def server(input, output, session):
 	def output_input_description():
 		return ui.input_selectize("description", "Description:",
 					choices = list(df["description"].unique()),
+					selected = ['Costco','Target','Walmart'],
 					multiple = True)
 
 # This is a shiny.App object. It must be named `app`.
