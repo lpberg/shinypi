@@ -8,7 +8,7 @@ def clean_data(df):
 	# Create month_year column
 	df["month_year"] = df["date"].dt.month.astype(str)+"_"+df["date"].dt.year.astype(str)
 	# Change account data type to category
-#	df['account'] = df["account"].astype('category')
+	df['account'] = df["account"].astype('category')
 	# Change description data type to category
 	df['description'] = df["description"].astype('category')
 	# Change account data type to category
