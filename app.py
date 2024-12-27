@@ -12,16 +12,29 @@ df = read_data()
 app_ui = ui.page_fluid(
 	# App Title
 	ui.panel_title(ui.h2("ShinyPi")),
-	# Input Controlls
-	ui.layout_columns(
-		ui.output_ui("output_input_daterange"),
-		ui.output_ui("output_input_accounts"),
-		ui.output_ui("output_input_description"),
-		ui.output_ui("output_input_type"),
-		col_widths=(3,3),
+
+	# Debug
+    ui.accordion(
+		ui.accordion_panel("Debug",
+			ui.output_text_verbatim(id = "output_txt"),
+		), open = False,
 	),
+
+	# Input Controlls
+	ui.accordion(
+		ui.accordion_panel("Filters",
+			ui.layout_columns(
+        		ui.output_ui("output_input_daterange"),
+        		ui.output_ui("output_input_accounts"),
+        		ui.output_ui("output_input_description"),
+        		ui.output_ui("output_input_type"),
+        		col_widths=(3,3),
+    		),
+		),
+	),
+
 	# Output
-    ui.output_text_verbatim(id = "output_txt"),
+
 	# Tabs
 	ui.navset_tab(
     	ui.nav_panel("Transactions",
@@ -44,7 +57,7 @@ app_ui = ui.page_fluid(
 		selected = "Transactions",
 	),
 	# App Theme
-	theme = shinyswatch.theme.zephyr,
+#	theme = shinyswatch.theme.zephyr,
 )
 
 def server(input, output, session):
