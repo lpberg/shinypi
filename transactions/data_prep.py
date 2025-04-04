@@ -8,7 +8,7 @@ def read_in_csvs():
 			if csv_file.endswith(".csv"):
 				df = pd.read_csv(csv_file)
 				combined_df = pd.concat([combined_df,df])
-	combined_df = combined_df.loc[combined_df["Account"].isin([account for account in combined_df["Account"].unique() if "Visa" in account])]
+	#combined_df = combined_df.loc[combined_df["Account"].isin([account for account in combined_df["Account"].unique() if "Visa" in account])]
 	return(combined_df)
 
 read_in_csvs().to_csv("../transactions.csv",index=False)

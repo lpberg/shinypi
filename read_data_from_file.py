@@ -6,7 +6,7 @@ def clean_data(df):
 	# Convert the date column to date format
 	df["date"] = pd.to_datetime(df["date"])
 	# Create month_year column
-	df["month_year"] = df['date'].dt.strftime('%m-01-%Y')
+	df["month_year"] = df['date'].dt.strftime('%Y-%m-01')
 	df["month_year_label"] = df["date"].dt.strftime("%b-%y")
 	# Change account data type to category
 	df['account'] = df["account"].astype('category')

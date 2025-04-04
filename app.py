@@ -95,7 +95,7 @@ def server(input, output, session):
 
 	@render.text
 	def output_txt():
-		return get_filtered_data().columns
+		return get_monthly_data()
 
 	@render.data_frame
 	def table_transactions():
@@ -145,6 +145,7 @@ def server(input, output, session):
 			color = "description"
 		).update_layout(
 			xaxis_title="Month",
+			xaxis={'categoryorder': 'array', 'categoryarray': mydf["month_year_label"].unique()},
 			yaxis_title="Total Amount ($)"
 		)
 
@@ -173,8 +174,8 @@ def server(input, output, session):
 	@render.ui
 	def output_input_daterange():
 		return ui.input_date_range("daterange","Dates:",
-					start="2024-05-01",
-			        end = "2024-10-10",
+					start = df["date"].max() - pd.Timedelta(days=365),
+			        end = df["date"].max() - pd.Timedelta(days=1),
 			        min = df["date"].min(),
 			        max = df["date"].max(),
 		)
