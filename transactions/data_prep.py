@@ -1,14 +1,15 @@
 import pandas as pd
 import os
 
-def read_in_csvs():
+def combine_csvs():
 	combined_df = pd.DataFrame()
 	for subdir, dirs, files in os.walk('./'):
-		for csv_file in files:
-			if csv_file.endswith(".csv"):
-				df = pd.read_csv(csv_file)
+		for file in files:
+			if file.endswith(".csv"):
+				df = pd.read_csv(file)
 				combined_df = pd.concat([combined_df,df])
-	#combined_df = combined_df.loc[combined_df["Account"].isin([account for account in combined_df["Account"].unique() if "Visa" in account])]
+	print(f"{os.path.basename(__file__)}: Transaction files read complete.")
+	print(f"Min date: {combined_df['Date'].min()}\nMax date: {combined_df['Date'].max()}")
 	return(combined_df)
 
-read_in_csvs().to_csv("../transactions.csv",index=False)
+combine_csvs().to_csv("../transactions.csv",index=False)

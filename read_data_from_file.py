@@ -12,15 +12,15 @@ def clean_data(df):
 	df['account'] = df["account"].astype('category')
 	# Change description data type to category
 	df['description'] = df["description"].astype('category')
-	# Change account data type to category
+	# Change category data type to category
 	df['category'] = df["category"].astype('category')
 	# Change tags data type to category
 	df['tags'] = df["tags"].astype('category')
 	# Create type column - credit or debit
-	df["type"] = ""
-	df.loc[df['amount'] < 0, 'type'] = 'debit'
+	df["type"] = "debit"
+	#df.loc[df['amount'] < 0, 'type'] = 'debit'
 	df.loc[df['amount'] >= 0, 'type'] = 'credit'
-	# Convert amount column to abs - after type is cacluated above
+	# Convert amount column to abs (after type is cacluated above)
 	df["amount"] = df["amount"].abs()
 
 def read_data():
