@@ -77,7 +77,7 @@ def server(input, output, session):
 
 	@reactive.calc
 	def get_monthly_data():
-		df_grouped = get_filtered_data().groupby(['month_year','description','month_year_label'],observed=True,as_index=False).agg(
+		df_grouped = get_filtered_data().groupby(['month_year','description','month_year_label'], observed=True, as_index=False).agg(
 			total = pd.NamedAgg(column="amount",aggfunc="sum")
 		)
 		return(df_grouped)
@@ -85,7 +85,7 @@ def server(input, output, session):
 	# Calcuate Monthly Average Group By Description
 	@reactive.calc
 	def get_monthly_description_ave():
-		fdf = get_monthly_data().groupby(['description'],observed=True,as_index=False).agg(
+		fdf = get_monthly_data().groupby(['description'], observed=True, as_index=False).agg(
 			mean = pd.NamedAgg(column="total",aggfunc="mean")
 		)
 		fdf["mean"] = round(fdf["mean"],0)
